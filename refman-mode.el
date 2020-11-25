@@ -29,6 +29,7 @@
 
 (defun refman/init ()
   "TODO: doc."
+  (interactive)
   (let* ((file-path (concat refman-notes-dir refman-notes-file))
          (file-exists (file-exists-p file-path)))
     (find-file file-path)
