@@ -27,6 +27,21 @@
 (defvar refman-notes-dir org-directory
   "Directory where `refman-notes-file' is located.")
 
+(defvar refman--wconf nil
+  "Hold the window configuration before `refman/init' is invoked
+(when workspaces are not used).")
+
+(defvar refman--buffer nil
+  "The buffer where the bibliography is shown.")
+
+(defun refman-mode ()
+  "TODO: doc."
+  (interactive)
+  ;; window management
+  (setq refman--wconf (current-window-configuration))
+  (delete-other-windows)
+  (refman/init))
+
 (defun refman/init ()
   "TODO: doc."
   (interactive)
@@ -37,8 +52,14 @@
       ;; set the title of the org buffer
       (insert "Bibliography\n")
       (insert "#+STARTUP: hideblocks overview\n\n")
-      (save-buffer))))
+      (save-buffer))
+    (setq refman--buffer (current-buffer))))
 
+(defun refman/quit ()
+  "TODO: doc."
+  (interactive)
+  (set-window-configuration refman--wconf)
+  (setq refman--buffer nil))
 
 (provide 'refman-mode)
 ;;; refman-mode.el ends here
