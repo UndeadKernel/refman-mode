@@ -52,13 +52,25 @@
       (insert "Bibliography\n")
       (insert "#+STARTUP: hideblocks overview\n\n")
       (save-buffer))
-    (setq refman--buffer (current-buffer))))
+    (setq refman--buffer (current-buffer))
+    (refman--bibliography-minor-mode)))
 
 (defun refman/quit ()
   "TODO: doc."
   (interactive)
   (set-window-configuration refman--wconf)
+  (kill-buffer refman--buffer)
   (setq refman--buffer nil))
+
+(defvar refman--bibliography-minor-mode-map
+  (let ((kmap (make-sparse-keymap)))
+    (define-key kmap (kbd "C-c C-q") 'refman/quit)
+    kmap))
+
+(define-minor-mode refman--bibliography-minor-mode
+  "Active when inside the bibliography file managed by refman-mode."
+  nil nil nil)
+
 
 (provide 'refman-mode)
 ;;; refman-mode.el ends here
