@@ -28,8 +28,7 @@
   "Directory where `refman-notes-file' is located.")
 
 (defvar refman--wconf nil
-  "Hold the window configuration before `refman/init' is invoked
-(when workspaces are not used).")
+  "The window configuration before `refman/init' is invoked.")
 
 (defvar refman--buffer nil
   "The buffer where the bibliography is shown.")
@@ -70,6 +69,20 @@
 (define-minor-mode refman--bibliography-minor-mode
   "Active when inside the bibliography file managed by refman-mode."
   nil nil nil)
+
+(defun refman/doi-to-bibtex (doi)
+  "TODO: "
+  (interactive "MDOI: ")
+  (let ((bibtex)
+        (url-mime-accept-string "text/bibliography;style=bibtex")
+        (url (format "http://dx.doi.org/%s"
+                     (replace-regexp-in-string "http://dx.doi.org/" "" doi))))
+    (with-current-buffer (url-retrieve-synchronously url)
+      (goto-char (point-max))
+      (setq bibtex
+            (buffer-substring (string-match "@" (buffer-string))
+                              (point)))
+      (message bibtex))))
 
 
 (provide 'refman-mode)
